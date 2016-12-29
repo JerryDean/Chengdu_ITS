@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.YjxtPlanMapper">
+
+    <select id="getPlan" resultType="Plan">
+        SELECT * FROM TR_ERS_PLAN
+    </select>
+
+    <select id="findYjxtPlanById" parameterType="String"  resultType="Plan">
+        SELECT * FROM TR_ERS_PLAN WHERE PLANID=#{planId}
+    </select>
+
+    <insert id="insertPlan" parameterType="Plan">
+        <selectKey keyProperty="planId" resultType="String" order="BEFORE">
+            select sys_guid() as planId from dual
+        </selectKey>
+
+        INSERT INTO TR_ERS_PLAN(PLANID,
+        PLANNAME,
+        PALNCODE,
+        PLANSTATE,
+        PLANTYPE,
+        PLANLEVEL,
+        ENACTDEPARTMENT,
+        ENACTDATE,
+        AFFILIATEDUNIT,
+        GRADEOFACCIDENTS,DESCRIPTION,CREATEDATE,CREATEUSER,UPDATEUSER,
+        PLANPARENTTYPE,
+        PLANCHILDTYPE,
+        PLANGROUPBZ)
+        VALUES(#{planId,jdbcType=VARCHAR},
+        #{planName,jdbcType=VARCHAR},#{palnCode,jdbcType=VARCHAR},
+        #{planState,jdbcType=VARCHAR},#{planType,jdbcType=VARCHAR},#{planLevel,jdbcType=VARCHAR},
+        #{enactDepartment,jdbcType=VARCHAR},#{enactDate,jdbcType=VARCHAR},#{affiliatedUnit,jdbcType=VARCHAR},
+        #{gradeOfAccidents,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{createDate,jdbcType=VARCHAR},
+        #{createUser,jdbcType=VARCHAR},#{updateUser,jdbcType=VARCHAR},#{planParentType,jdbcType=VARCHAR},
+        #{planChildType,jdbcType=VARCHAR},#{planGroupBz,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updatePlan" parameterType="Plan">
+        update TR_ERS_PLAN SET PLANNAME=#{planName,jdbcType=VARCHAR},
+        PALNCODE=#{palnCode,jdbcType=VARCHAR},PLANSTATE=#{planState,jdbcType=VARCHAR},
+        PLANTYPE=#{planType,jdbcType=VARCHAR},PLANLEVEL=#{planLevel,jdbcType=VARCHAR},
+        ENACTDEPARTMENT=#{enactDepartment,jdbcType=VARCHAR},ENACTDATE=#{enactDate,jdbcType=VARCHAR},
+        AFFILIATEDUNIT=#{affiliatedUnit,jdbcType=VARCHAR},GRADEOFACCIDENTS=#{gradeOfAccidents,jdbcType=VARCHAR},
+        DESCRIPTION=#{description,jdbcType=VARCHAR},CREATEDATE=#{createDate,jdbcType=VARCHAR},
+        CREATEUSER=#{createUser,jdbcType=VARCHAR},UPDATEUSER=#{updateUser,jdbcType=VARCHAR},
+        PLANPARENTTYPE=#{planParentType,jdbcType=VARCHAR},PLANCHILDTYPE=#{planChildType,jdbcType=VARCHAR},
+        PLANGROUPBZ=#{planGroupBz,jdbcType=VARCHAR}
+        WHERE PLANID=#{planId,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

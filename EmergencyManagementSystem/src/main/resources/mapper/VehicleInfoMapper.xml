@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.VehicleInfoMapper">
+	<select id="getVehicleInfoByPlateNumber" parameterType="String" resultType="VehicleInfo">
+		SELECT PLATENUMBER, X, Y, DATATIME FROM (
+			SELECT t.*,ROWNUM RN FROM TR_ERS_VEHICLEINFO t 
+			WHERE 
+			PLATENUMBER = #{plateNumber} ORDER BY DATATIME
+		) 
+		WHERE RN = 1
+	</select>
+	<select id="getVehicleTrack" resultType="VehicleInfo">
+		SELECT * FROM TR_ERS_VEHICLEINFO WHERE PLATENUMBER = #{0} AND DATATIME BETWEEN #{1} AND #{2}
+	</select>								
+</mapper>

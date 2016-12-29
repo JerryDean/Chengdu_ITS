@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.YjxtDictionaryMapper">
+									
+    <select id="getDictionary" resultType="Dictionary">
+        SELECT * FROM TR_ERS_DICTIONARY
+    </select>
+
+    <select id="getViewDictionary" resultType="ViewDictionary">
+        SELECT * FROM YJXT_VIEWDICTIONARY
+    </select>
+
+    <select id="getDictionaryById" parameterType="String" resultType="Dictionary">
+        SELECT * FROM TR_ERS_DICTIONARY WHERE DicID=#{dicID}
+    </select>
+
+    <delete id="deleteDictionary" parameterType="Dictionary">
+        DELETE FROM TR_ERS_DICTIONARY WHERE DicID=#{dicID,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insertDictionary" parameterType="Dictionary" >
+        <selectKey keyProperty="dicID" resultType="java.lang.String" order="BEFORE">
+            select sys_guid() as dicID from dual
+        </selectKey>
+        INSERT INTO TR_ERS_DICTIONARY(DicID,DicTypeID,DicValue,DicCode,DicNote,DicCategoryID)
+        VALUES(#{dicID,jdbcType=VARCHAR},#{dicTypeID,jdbcType=VARCHAR},#{dicValue,jdbcType=VARCHAR},
+        #{dicCode,jdbcType=VARCHAR},#{dicNote,jdbcType=VARCHAR},#{dicCategoryID,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateDictionary" parameterType="Dictionary">
+        UPDATE TR_ERS_DICTIONARY SET DicTypeID=#{dicTypeID,jdbcType=VARCHAR},DicValue=#{dicValue,jdbcType=VARCHAR},
+        DicCode=#{dicCode,jdbcType=VARCHAR},DicNote=#{dicNote,jdbcType=VARCHAR},
+        DicCategoryID=#{dicCategoryID,jdbcType=VARCHAR}
+        WHERE DicID=#{dicID,jdbcType=VARCHAR}
+    </update>
+    
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<context:component-scan base-package="com.ste.emer">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- 配置管理https://192.168.1.92:8443/svn/IntelTrafficSys/sourcecode/trunk/java_pro_workspace/alarmManagement/trunk_new
+	https://101.204.232.150:8443/svn/IntelTrafficSys/sourcecode/trunk/java_pro_workspace/alarmManagement/trunk_new -->
+	<bean class="com.stee.dsms.properties.PropertyConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<!-- 加载本地properties -->
+		<!-- <property name="locations"> <list> <value>classpath:config.properties</value> 
+			</list> </property> -->
+		<property name="remotes"><!-- 加载远程properties -->
+			<list>
+				<value>
+					http://192.168.1.96:9096/ConfigurationManagement/jdbc.properties
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="myDataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="${hibernate.crtJdbcUrl}" />
+		<property name="username" value="${ersusername}" />
+		<property name="password" value="${erspassword}" />
+	</bean>
+
+	<!-- SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="myDataSource" />
+		<property name="mapperLocations" value="classpath:mapper/*.xml" />
+		<property name="typeAliasesPackage" value="com.ste.emer.model" />
+	</bean>
+
+	<!-- ================================事务相关控制================================================= -->
+	<!-- transaction manager, use DataSourceTransactionManager -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="myDataSource" />
+	</bean>
+	<!-- spring declarative transaction management -->
+	<aop:config>
+		<aop:pointcut id="fooServiceMethods"
+			expression="execution(* com.ste.emer.service.impl.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="fooServiceMethods" />
+	</aop:config>
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="*" rollback-for="Exception" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 自动扫描dao -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.ste.emer.dao" />
+	</bean>
+
+</beans>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.YjxtPlanClassificationMapper">
+
+    <select id="getYjxtPlanClassificationById" parameterType="String" resultType="PlanClass">
+        SELECT * FROM TR_ERS_PLANCLASSIFCATION WHERE PCID=#{pcID}
+    </select>
+
+    <select id="getYjxtPlanClassificationByPlanId" parameterType="String" resultType="PlanClass">
+        SELECT * FROM TR_ERS_PLANCLASSIFCATION WHERE PLANID=#{planID}
+    </select>
+
+    <select id="getListYjxtPlanClassification" resultType="PlanClass">
+        SELECT * FROM TR_ERS_PLANCLASSIFCATION
+    </select>
+
+    <delete id="deleteYjxtPlanClassification" parameterType="String">
+        DELETE FROM TR_ERS_PLANCLASSIFCATION WHERE PCID=#{pcID}
+    </delete>
+
+    <delete id="deleteYjxtPlanClassificationByPlanId" parameterType="String">
+        DELETE FROM TR_ERS_PLANCLASSIFCATION WHERE PLANID=#{planID,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insertYjxtPlanClassification" parameterType="PlanClass">
+        <selectKey keyProperty="pcID" resultType="String" order="BEFORE">
+            select sys_guid() as pcID from dual
+        </selectKey>
+        INSERT INTO TR_ERS_PLANCLASSIFCATION(PCID,INCIDENTLEVEL,DESCRIB,PLANID)
+        VALUES(#{pcID,jdbcType=VARCHAR},#{incidentLevel,jdbcType=VARCHAR},
+        #{describ,jdbcType=VARCHAR},#{planID,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateYjxtPlanClassification" parameterType="PlanClass">
+        UPDATE TR_ERS_PLANCLASSIFCATION SET INCIDENTLEVEL=#{incidentLevel,jdbcType=VARCHAR},
+        DESCRIB=#{describ,jdbcType=VARCHAR},PLANID=#{planID,jdbcType=VARCHAR}
+        WHERE PCID=#{pcID,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

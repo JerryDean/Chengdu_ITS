@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+
+        <!-- <typeAlias alias="ViewDictionary" type="com.ste.emer.model.YjxtViewdictionary"/> -->
+
+        <typeAlias alias="Emergencydispose" type="com.ste.emer.model.YjxtEmergencydispose"/>
+
+        <!-- <typeAlias alias="ViewReport" type="com.ste.emer.model.YjxtViewreport"/> -->
+
+      <!--  <typeAlias alias="Emeraccidentgrade" type="com.ste.emer.model.Emeraccidentgrade"/>-->
+        <typeAlias alias="Report" type="com.ste.emer.model.YjxtReport"/>
+        <typeAlias alias="Dictionary" type="com.ste.emer.model.YjxtDictionary"/>
+        <typeAlias alias="DictionaryType" type="com.ste.emer.model.YjxtDictionaryType"/>
+        <typeAlias alias="Plan" type="com.ste.emer.model.YjxtPlan"/>
+        <typeAlias alias="Incident" type="com.ste.emer.model.YjxtIncident"/>
+        <typeAlias alias="IncidentFlow" type="com.ste.emer.model.YjxtIncidentflow"/>
+        <typeAlias alias="Edisposeflow" type="com.ste.emer.model.YjxtEdisposeflow"/>
+        <!-- <typeAlias alias="Sms" type="com.ste.emer.model.YjxtSms"/> -->
+        <typeAlias alias="PlanClass" type="com.ste.emer.model.YjxtPlanClassification"/>
+        
+        <!-- IEmergencySys -->
+        <typeAlias alias="VehicleInfo" type="com.ste.emer.model.VehicleInfo"/>
+        <typeAlias alias="TaskForProposal" type="com.ste.emer.model.TaskForProposal"/>
+        <typeAlias alias="TaskForEmergencyIncident" type="com.ste.emer.model.TaskForEmergencyIncident"/>
+        <typeAlias alias="EmergencyIncidentResourceDetail" type="com.ste.emer.model.EmergencyIncidentResourceDetail"/>
+        <typeAlias alias="EmergencyIncidentResource" type="com.ste.emer.model.EmergencyIncidentResource"/>
+        <typeAlias alias="EmergencyIncidentProposal" type="com.ste.emer.model.EmergencyIncidentProposal"/>
+        <typeAlias alias="EmergencyIncidentLog" type="com.ste.emer.model.EmergencyIncidentLog"/>
+        <typeAlias alias="EmergencyIncidentGISStatus" type="com.ste.emer.model.EmergencyIncidentGISStatus"/>
+        <typeAlias alias="EmergencyIncident" type="com.ste.emer.model.EmergencyIncident"/>
+
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+                <property name="url" value="jdbc:oracle:thin:@192.168.1.96:1521:itscrtdb"/>
+                <property name="username" value="ers"/>
+                <property name="password" value="ers"/>
+            </dataSource>
+            <!--<dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/emergency?useUnicode=true&amp;characterEncoding=UTF-8&amp;"/>
+                <property name="username" value="root"/>
+                <property name="password" value="111"/>
+            </dataSource>-->
+        </environment>
+    </environments>
+
+    <mappers>
+
+
+        <mapper resource="mapper/EmergencydisposeMapper.xml"/>
+
+       <!-- <mapper resource="mapper/EmeraccidentgradeMapper.xml"/> -->
+        <mapper resource="mapper/IncidentFlowMapper.xml"/>
+        <mapper resource="mapper/PlanMapper.xml"/>
+        <mapper resource="mapper/IncidentMapper.xml"/>
+        <mapper resource="mapper/DictionaryMapper.xml"/>
+        <mapper resource="mapper/DictionaryTypeMapper.xml"/>
+        <mapper resource="mapper/EdisposeflowMapper.xml"/>
+        <mapper resource="mapper/ReportMapper.xml"/>
+        <mapper resource="mapper/PlanClassificationMapper.xml"/>
+        <!--<mapper resource="mapper/SmsMapper.xml"/>-->
+        
+        <!-- Add by DengBW -->
+        
+        <mapper resource="mapper/VehicleInfoMapper.xml"/>
+        <mapper resource="mapper/EmergencyIncidentResourceMapper.xml"/>
+        <mapper resource="mapper/EmergencyIncidentGISStatusMapper.xml"/>
+        <mapper resource="mapper/TaskForProposalMapper.xml"/>
+        <mapper resource="mapper/TaskForEmergencyIncidentMapper.xml"/>
+        <mapper resource="mapper/EmergencyIncidentResourceDetailMapper.xml"/>
+        <mapper resource="mapper/EmergencyIncidentProposalMapper.xml"/>
+        <mapper resource="mapper/EmergencyIncidentMapper.xml"/>
+        <mapper resource="mapper/EmergencyIncidentLogMapper.xml"/>
+        
+         
+        
+    </mappers>
+</configuration>

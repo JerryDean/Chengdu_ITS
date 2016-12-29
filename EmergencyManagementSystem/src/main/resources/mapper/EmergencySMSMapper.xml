@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.EmergencySMSMapper">
+	
+	 <resultMap type="com.ste.emer.model.EmergencyMsg" id="EmergencyMsgMap">  
+        <id column="msgid" property="msgId"/>  
+        <result column="content" property="content"/>
+        <result column="emergencyId" property="emergencyId"/>
+        <collection property="phoneStates" resultMap="phoneStateMap"></collection> 
+    </resultMap>  
+    
+     <resultMap id="phoneStateMap" type="com.ste.emer.model.PhoneState">
+        <result property="phoneNumbers" column="phoneNumbers" />
+        <result property="status" column="status" />
+    </resultMap>
+	
+	<select id="getEmerMsgByEmergencyId" parameterType="String" resultMap="EmergencyMsgMap">
+		SELECT a.*,b.phonenumbers,b.status 
+		FROM 
+    		TR_ERS_EMERGENCYMSG a LEFT JOIN  TR_ERS_MSGPHONE b 
+        ON a.msgid = b.msgid
+    	WHERE emergencyId = #{0}
+	</select>
+	
+	<insert id="addEmerMsg" parameterType="EmergencyMsg">
+		INSERT INTO TR_ERS_EMERGENCYMSG(  
+			msgId,
+  			content,
+  			emergencyId
+  			)VALUES(
+  			#{msgId,jdbcType=VARCHAR},
+  			#{content,jdbcType=VARCHAR},
+  			TO_NUMBER(#{emergencyId,jdbcType=VARCHAR})
+  			)
+	</insert>
+	<insert id="addEmerPhone" parameterType="String">
+		INSERT INTO TR_ERS_MSGPHONE(
+  				id,
+  				msgId,
+  				phoneNumbers,
+  				status
+		)values(
+				SEQ_ER_EMER_MSGPHONE_id.NEXTVAL,
+				#{msgId,jdbcType=VARCHAR},
+				#{phoneNumbers,jdbcType=VARCHAR},
+				#{status,jdbcType=VARCHAR}
+				)
+	</insert>
+	<update id="updateEmerMsg" parameterType="String">
+		UPDATE TR_ERS_MSGPHONE
+   		SET status = #{status,jdbcType=VARCHAR}
+ 		WHERE msgid = #{msgId,jdbcType=VARCHAR}
+   		AND phonenumbers = #{phoneNumbers,jdbcType=VARCHAR}
+	</update>
+	
+</mapper>

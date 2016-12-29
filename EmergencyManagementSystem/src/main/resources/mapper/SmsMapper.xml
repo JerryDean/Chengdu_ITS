@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.YjxtSmsMapper">
+    <select id="getYjxtSms" resultType="Sms">
+        SELECT * FROM YJXT_SMS
+    </select>
+
+    <insert id="insertYjxtSms" parameterType="Sms">
+        <selectKey keyProperty="smsID" resultType="int" order="BEFORE">
+            select sys_guid() as smsID from dual
+        </selectKey>
+        INSERT INTO YJXT_SMS(SMSID,SMSText,SendUser,RecivedUser,SendTime)
+        VALUES(#{smsID,jdbcType=VARCHAR},#{smsText,jdbcType=VARCHAR},#{sendUser,jdbcType=VARCHAR},
+        #{recivedUser,jdbcType=VARCHAR},#{sendTime,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteYjxtSms" parameterType="Integer">
+        DELETE * FROM YJXT_SMS WHERE SMSID=#{smsID}
+    </delete>
+
+    <select id="findYjxtSmsById" parameterType="Integer">
+        SELECT * FROM YJXT_SMS WHERE SMSID=#{smsID}
+    </select>
+
+    <update id="updateYjxtSms" parameterType="Sms">
+        UPDATE YJXT_SMS SET SMSText=#{smsText,jdbcType=VARCHAR},SendUser=#{sendUser,jdbcType=VARCHAR},
+        RecivedUser=#{recivedUser,jdbcType=VARCHAR},SendTime=#{sendTime,jdbcType=VARCHAR}
+        WHERE SMSID=#{smsID}
+    </update>
+
+</mapper>

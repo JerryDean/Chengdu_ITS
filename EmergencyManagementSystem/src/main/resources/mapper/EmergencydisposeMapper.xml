@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.YjxtEmergencydisposeMapper">
+    <select id="getEmergencydispose" resultType="Emergencydispose">
+        SELECT * FROM TR_ERS_HANDLE
+    </select>
+
+    <select id="getEmergencydisposeById" resultType="Emergencydispose" parameterType="String">
+        SELECT * FROM TR_ERS_HANDLE WHERE EMERGENCYID=#{emergencyId}
+    </select>
+
+    <select id="getEmergencydisposeByPlanID" resultType="Emergencydispose">
+        SELECT * FROM TR_ERS_HANDLE WHERE PLANID=#{planId}
+    </select>
+
+    <delete id="deleteYjxtEmergencydisposeByID2" parameterType="Emergencydispose">
+        DELETE FROM TR_ERS_HANDLE WHERE PLANID=#{planId,jdbcType=VARCHAR} AND INCIDENTLEVEL=#{incidentLevel,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insertEmergencydispose"  parameterType="Emergencydispose">
+        <selectKey keyProperty="emergencyId" resultType="String" order="BEFORE">
+            select sys_guid() as emergencyId from dual
+        </selectKey>
+        INSERT INTO TR_ERS_HANDLE(EMERGENCYID,PLANID,QUESTNAME,QUESTDEFINE,ORGANID,IMPORTANCE,GRADEOFACCIDENTS,SORTVALUE,INCIDENTLEVEL,CREATEDATE)
+        VALUES(#{emergencyId,jdbcType=VARCHAR},#{planId,jdbcType=VARCHAR},#{questName,jdbcType=VARCHAR},
+        #{questDefine,jdbcType=VARCHAR},#{organId,jdbcType=VARCHAR},#{importance,jdbcType=VARCHAR},#{gradeOfAccidents,jdbcType=VARCHAR},
+        #{sortValue,jdbcType=VARCHAR},#{incidentLevel,jdbcType=VARCHAR},#{createDate,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateEmergencydispose" parameterType="Emergencydispose">
+        UPDATE TR_ERS_HANDLE SET PLANID=#{planId,jdbcType=VARCHAR},QUESTNAME=#{questName,jdbcType=VARCHAR},
+        QUESTDEFINE=#{questDefine,jdbcType=VARCHAR},ORGANID=#{organId,jdbcType=VARCHAR},
+        IMPORTANCE=#{importance,jdbcType=VARCHAR},GRADEOFACCIDENTS=#{gradeOfAccidents,jdbcType=VARCHAR},
+        SORTVALUE=#{sortValue,jdbcType=VARCHAR},INCIDENTLEVEL=#{incidentLevel,jdbcType=VARCHAR},
+        CREATEDATE=#{createDate,jdbcType=VARCHAR}
+        WHERE EMERGENCYID=#{emergencyId}
+    </update>
+
+
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.EmergencyIncidentProposalMapper">
+	<insert id="addEmergencyIncidentProposal" parameterType="EmergencyIncidentProposal" >
+		insert into TR_ERS_PROPOSAL(
+					id,
+					proposalId,name,
+					TYPE,subType,
+					description,createDate,
+					creator,updateRecord,
+					remark,STATUS,
+					customUnit,orgnizationUnit,incidentlevel
+					)values(
+					SEQ_ER_EMER_InciProposal_ID.nextval,
+					#{proposalId,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},
+					#{type,jdbcType=INTEGER},#{subType,jdbcType=INTEGER},
+					#{description,jdbcType=VARCHAR},#{createDate,jdbcType=DATE},
+					#{creator,jdbcType=VARCHAR},#{updateRecord,jdbcType=VARCHAR},
+					#{remark,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},
+					#{customUnit,jdbcType=VARCHAR},#{orgnizationUnit,jdbcType=VARCHAR},
+					#{incidentLevel,jdbcType=INTEGER}
+					)
+	</insert>
+	<update id="updateEmergencyIncidentProposal" parameterType="EmergencyIncidentProposal">
+		update TR_ERS_PROPOSAL 
+		set 
+		proposalId=#{proposalId,jdbcType=INTEGER},
+		name=#{name,jdbcType=VARCHAR},
+		TYPE=#{type,jdbcType=INTEGER},
+		subType=#{subType,jdbcType=INTEGER},
+		description=#{description,jdbcType=VARCHAR},
+		createDate=#{createDate,jdbcType=DATE},
+		creator=#{creator,jdbcType=VARCHAR},
+		updateRecord=#{updateRecord,jdbcType=VARCHAR},
+		remark=#{remark,jdbcType=VARCHAR},
+		STATUS=#{status,jdbcType=INTEGER},
+		customUnit=#{customUnit,jdbcType=VARCHAR},
+		orgnizationUnit=#{orgnizationUnit,jdbcType=VARCHAR},
+		 incidentlevel = #{incidentLevel,jdbcType=INTEGER}
+		where id=#{id,jdbcType=INTEGER}
+	</update>
+	<delete id="deleteEmergencyIncidentProposal" parameterType="int" >
+		delete from TR_ERS_PROPOSAL where Id=#{Id}
+	</delete>
+	<select id="getEmergencyIncidentProposalById" parameterType="int" resultType="EmergencyIncidentProposal">
+		select * from TR_ERS_PROPOSAL where Id=#{Id}
+	</select>
+	<select id="findEmergencyIncidentProposal" resultType="EmergencyIncidentProposal">
+		select id,proposalId,name,TYPE,subType,description,createDate,creator,updateRecord,remark,STATUS,customUnit,orgnizationUnit,incidentlevel from
+		(select ip.*,rownum row_num from TR_ERS_PROPOSAL ip  
+		<trim prefix="WHERE" prefixOverrides="AND|OR">   
+		<if test="type!=0">
+			 TYPE=#{type,jdbcType=INTEGER}
+		</if>
+		<if test="subType!=0">
+			 AND SUBTYPE=#{subType,jdbcType=INTEGER}
+		</if>
+		<if test="name!=null and name!=''">
+			 AND NAME LIKE '%'||#{name,jdbcType=VARCHAR}||'%'
+		</if> 
+		</trim>
+		) b 
+		where b.row_num between (#{currentPage}-1)*#{pageSize}+1 and #{currentPage}*#{pageSize} 
+		order by id
+	</select>
+	<select id="getTotalCurrent" resultType="int">
+		select count(*) from TR_ERS_PROPOSAL 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">   
+		<if test="type!=0">
+			 TYPE=#{type}
+		</if>
+		<if test="subType!=0">
+			 AND SUBTYPE=#{subType}
+		</if>
+		<if test="name!=null and name!=''">
+			 AND NAME=#{name}
+		</if> 
+		</trim> 
+	</select>
+	
+	<select id="getMaxId" resultType="int">
+		SELECT id FROM TR_ERS_PROPOSAL WHERE id=(SELECT max(id) FROM TR_ERS_PROPOSAL)
+	</select>
+	
+	<select id="findEmergencyIncidentProposalAll" resultType="EmergencyIncidentProposal">
+		select id,proposalId,name,TYPE,subType,description,createDate,creator,updateRecord,remark,STATUS,customUnit,orgnizationUnit,incidentlevel from
+		(select ip.*,rownum row_num from TR_ERS_PROPOSAL ip  ) b 
+		where b.row_num between (#{currentPage}-1)*#{pageSize}+1 and #{currentPage}*#{pageSize} 
+	
+	</select>
+	
+	<select id="getTotalCurrentAll" resultType="int">
+		select count(*) from TR_ERS_PROPOSAL 
+	</select>
+
+									
+    
+</mapper>

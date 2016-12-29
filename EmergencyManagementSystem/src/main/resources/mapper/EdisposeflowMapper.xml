@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.YjxtEdisposeflowMapper">
+    <select id="getEdisposeflow" resultType="Edisposeflow">
+      SELECT * FROM TR_ERS_EDISPOSEFLOW
+    </select>
+
+    <insert id="insertEdisposeflow" parameterType="Edisposeflow">
+        <selectKey keyProperty="emergencyId" resultType="String" order="BEFORE">
+            select sys_guid() as emergencyId from dual
+        </selectKey>
+        INSERT INTO TR_ERS_EDISPOSEFLOW(EMERGENCYID,EDisID,INCIDENTID,PLANID,QUESTNAME,QUESTDEFINE,ORGANID,IMPORTANCE,GRADEOFACCIDENTS,SORTVALUE,CREATEDATE)
+        VALUES(#{emergencyId,jdbcType=VARCHAR},#{eDisID,jdbcType=VARCHAR},#{incidentId,jdbcType=VARCHAR},#{planId,jdbcType=VARCHAR},#{questName,jdbcType=VARCHAR},
+        #{questDefine,jdbcType=VARCHAR},#{organId,jdbcType=VARCHAR},#{importance,jdbcType=VARCHAR},
+        #{gradeOfAccidents,jdbcType=VARCHAR},#{sortValue,jdbcType=VARCHAR},#{createDate,jdbcType=VARCHAR})
+    </insert>
+
+
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.EmerplangradeMapper">
+    <select id="getEmerplangrade" resultType="Emerplangrade">
+        SELECT * FROM EMER_PLAN_GRADE
+    </select>
+
+    <select id="findById" parameterType="String" resultType="Emerplangrade">
+        SELECT * FROM EMER_PLAN_GRADE WHERE PG_ID=#{pgID}
+    </select>
+
+    <insert id="addEmerplangrade" parameterType="Emerplangrade">
+        <selectKey keyProperty="pgID" resultType="String" order="BEFORE">
+            select sys_guid() as pgID from dual
+        </selectKey>
+        INSERT INTO EMER_PLAN_GRADE(PG_ID,PG_VALUE)
+        VALUES(#{pgID,jdbcType=VARCHAR},#{pgValue,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteEmerplangrade" parameterType="String">
+        DELETE FROM EMER_PLAN_GRADE WHERE PG_ID=#{pgID}
+    </delete>
+
+    <update id="updateEmerplangrade" parameterType="Emerplangrade">
+        update EMER_PLAN_GRADE SET PG_VALUE=#{pgValue} WHERE PG_ID=#{pgID}
+    </update>
+
+
+</mapper>

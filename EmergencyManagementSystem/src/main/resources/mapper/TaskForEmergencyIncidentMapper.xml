@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.TaskForEmergencyIncidentMapper">
+	<insert id="addTaskForEmergencyIncident" parameterType="TaskForEmergencyIncident">
+        INSERT INTO  TR_ERS_TASKFORINCIDENT(
+		        id,
+		        emergencyIncidentId,taskName,
+		        describe, executedBy, 
+		        STATUS ,ProposalName
+        )VALUES(
+        		SEQ_ER_EMER_TaskForEI_ID.nextval,
+        		#{emergencyIncidentId,jdbcType=INTEGER},#{taskName,jdbcType=VARCHAR},
+        		#{describe,jdbcType=VARCHAR},#{executedBy,jdbcType=VARCHAR},
+        		#{status,jdbcType=INTEGER},#{ProposalName,jdbcType=VARCHAR}
+        		)
+	</insert>
+	<delete id="deleteTaskForEmergencyIncident" >
+		DELETE FROM  TR_ERS_TASKFORINCIDENT WHERE ID=#{id}
+	</delete>
+	<update id="updateTaskForEmergencyIncident" parameterType="TaskForEmergencyIncident">
+		 UPDATE TR_ERS_TASKFORINCIDENT  
+		 SET 
+		 emergencyIncidentID=#{emergencyIncidentId,jdbcType=INTEGER},
+		 taskName=#{taskName,jdbcType=VARCHAR},
+		 describe=#{describe,jdbcType=VARCHAR}, 
+		 executedBy=#{executedBy,jdbcType=VARCHAR},
+		 STATUS=#{status,jdbcType=INTEGER},
+		 ProposalName=#{ProposalName,jdbcType=VARCHAR}
+      	 WHERE ID=#{id,jdbcType=INTEGER}
+	</update>
+	<select id="findTaskByEmergencyIncidentId" resultType="TaskForEmergencyIncident">
+		SELECT * FROM TR_ERS_TASKFORINCIDENT WHERE emergencyIncidentID=#{0} ORDER BY TASKNAME
+	</select>	
+	<select id="slectMaxId" resultType="int">
+   		SELECT id FROM TR_ERS_TASKFORINCIDENT WHERE id=(SELECT max(id) from TR_ERS_TASKFORINCIDENT)
+   	</select>							
+</mapper>

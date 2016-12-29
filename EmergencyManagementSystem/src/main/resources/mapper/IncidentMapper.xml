@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.YjxtIncidentMapper">
+
+	<delete id="deleteIncidentByName" parameterType="Incident">
+        DELETE FROM TR_ERS_INCIDENT WHERE IncidentName=#{incidentName,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="getIncident" resultType="Incident">
+        SELECT * FROM TR_ERS_INCIDENT
+    </select>
+
+    <select id="findYjxtIncidentById" parameterType="String" resultType="Incident">
+        SELECT  * FROM  TR_ERS_INCIDENT WHERE IncidentID=#{incidentID}
+    </select>
+
+    <insert id="insertIncident" parameterType="Incident">
+        <selectKey keyProperty="incidentID" resultType="String" order="BEFORE">
+            select sys_guid() as incidentID from dual
+        </selectKey>
+        INSERT INTO TR_ERS_INCIDENT(IncidentID,PlanID,IncidentName,IncidentType,
+        IncidentState,CreateDate,IncidentOrigin,StartTime,EndTime,IncidentLevel,
+        IncidentAddress,IncidentDescription,PlaceType,IncidentOther,IncidentX,
+        IncidentY,IsWatchCCTV,OrganID,IsEnd,IsGive,IncidentSubType)
+        VALUES(#{incidentID,jdbcType=VARCHAR},#{planID,jdbcType=VARCHAR},#{incidentName,jdbcType=VARCHAR},
+        #{incidentType,jdbcType=VARCHAR},#{incidentState,jdbcType=VARCHAR},#{createDate,jdbcType=VARCHAR},#{incidentOrigin,jdbcType=VARCHAR},#{startTime,jdbcType=VARCHAR},
+        #{endTime,jdbcType=VARCHAR},#{incidentLevel,jdbcType=VARCHAR},#{incidentAddress,jdbcType=VARCHAR},#{incidentDescription,jdbcType=VARCHAR},
+        #{placeType,jdbcType=VARCHAR},#{incidentOther,jdbcType=VARCHAR},#{incidentX,jdbcType=VARCHAR},#{incidentY,jdbcType=VARCHAR},#{isWatchCCTV,jdbcType=VARCHAR},
+        #{organID,jdbcType=VARCHAR},#{isEnd,jdbcType=VARCHAR},#{isGive,jdbcType=VARCHAR},#{incidentSubType,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateIncident" parameterType="Incident">
+        UPDATE TR_ERS_INCIDENT SET PlanID=#{planID,jdbcType=VARCHAR},
+        IncidentName=#{incidentName,jdbcType=VARCHAR},
+        IncidentType=#{incidentType,jdbcType=VARCHAR},
+        IncidentState=#{incidentState,jdbcType=VARCHAR},
+        IncidentOrigin=#{incidentOrigin,jdbcType=VARCHAR},
+        EndTime=#{endTime,jdbcType=VARCHAR},
+        IncidentLevel=#{incidentLevel,jdbcType=VARCHAR},
+        IncidentAddress=#{incidentAddress,jdbcType=VARCHAR},
+        IncidentDescription=#{incidentDescription,jdbcType=VARCHAR},
+        PlaceType=#{placeType,jdbcType=VARCHAR},
+        IncidentOther=#{incidentOther,jdbcType=VARCHAR},
+        IncidentX=#{incidentX,jdbcType=VARCHAR},
+        IncidentY=#{incidentY,jdbcType=VARCHAR},
+        IsWatchCCTV=#{isWatchCCTV,jdbcType=VARCHAR},
+        OrganID=#{organID,jdbcType=VARCHAR},
+        IsEnd=#{isEnd,jdbcType=VARCHAR},
+        IsGive=#{isGive,jdbcType=VARCHAR},
+        IncidentSubType=#{incidentSubType,jdbcType=VARCHAR}
+        WHERE IncidentID=#{incidentID}
+    </update>
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.EmergencyIncidentMapper">
+		
+	<insert id="addEmergencyIncident"  parameterType="EmergencyIncident" >
+	INSERT INTO TR_ERS_INCIDENTDETAIL(
+			id,
+			emergencyIncidentID,incidentSource,
+			incidentType,incidentType_sub,
+			describe,incidentRemark,
+			X, Y,
+			roadName,adminName,
+			streetName,incidentCreateTime,
+			incidentStopTime,incidentGrade,
+			createPerson,STATUS
+			)VALUES(
+			SEQ_ER_EMER_EI_ID.nextval,
+			#{emergencyIncidentId,jdbcType=INTEGER},#{incidentSource,jdbcType=VARCHAR},
+			#{incidentType,jdbcType=INTEGER},#{incidentType_sub,jdbcType=INTEGER},
+			#{describe,jdbcType=VARCHAR},#{incidentRemark,jdbcType=VARCHAR},
+			#{X,jdbcType=DOUBLE},#{Y,jdbcType=DOUBLE},
+			#{roadName,jdbcType=VARCHAR},#{adminName,jdbcType=VARCHAR}, 
+			#{streetName,jdbcType=VARCHAR},#{incidentCreateTime,jdbcType=DATE},
+			#{incidentStopTime,jdbcType=DATE},#{incidentGrade,jdbcType=INTEGER},
+			#{createPerson,jdbcType=VARCHAR},#{Status,jdbcType=INTEGER}
+			)
+    </insert>
+    
+   	<select id="findEmergencyIncidentByStatus" resultType="EmergencyIncident">
+  	 select 
+  	 		id,
+  	 		emergencyIncidentID,incidentSource,
+  	 		incidentType,incidentType_sub,
+			describe,incidentRemark,
+			X,Y,
+			roadName,adminName,
+			streetName,incidentCreateTime,
+			incidentStopTime,incidentGrade,
+			createPerson,STATUS
+	from
+   		(select 
+   			t.*,rownum row_num from TR_ERS_INCIDENTDETAIL t  
+   		 where 
+   		 	t.STATUS=#{status}
+   		 ) b
+	where 
+		b.row_num between 
+			(#{currentPage}-1)*#{pageSize}+1 and #{currentPage}*#{pageSize}
+	order by  b.incidentcreatetime desc, b.status 
+   	</select>
+   	
+   	<update id="updateEmergencyIncident" parameterType="EmergencyIncident">
+   		 UPDATE TR_ERS_INCIDENTDETAIL  
+   		 SET 
+         	emergencyIncidentID=#{emergencyIncidentId,jdbcType=INTEGER},
+			incidentSource=#{incidentSource,jdbcType=VARCHAR},
+			incidentType=#{incidentType,jdbcType=INTEGER},
+			incidentType_sub=#{incidentType_sub,jdbcType=INTEGER},
+			describe=#{describe,jdbcType=VARCHAR},
+			incidentRemark=#{incidentRemark,jdbcType=VARCHAR},
+			X=#{X,jdbcType=DOUBLE},
+			Y=#{Y,jdbcType=DOUBLE},
+			roadName=#{roadName,jdbcType=VARCHAR},
+			adminName=#{adminName,jdbcType=VARCHAR}, 
+			streetName=#{streetName,jdbcType=VARCHAR},
+			incidentCreateTime=#{incidentCreateTime,jdbcType=DATE},
+			incidentStopTime=#{incidentStopTime,jdbcType=DATE},
+			incidentGrade=#{incidentGrade,jdbcType=INTEGER},
+			createPerson=#{createPerson,jdbcType=VARCHAR},
+			STATUS=#{Status,jdbcType=INTEGER}
+         WHERE ID=#{id}
+   	</update>
+   	<select id="getAllPages" resultType="int">
+   	SELECT count(*) FROM TR_ERS_INCIDENTDETAIL where Status=#{0}
+   	</select>
+   	
+   	<select id="getEmergencyIncidentById" parameterType="String" resultType="EmergencyIncident">
+   	SELECT *FROM TR_ERS_INCIDENTDETAIL WHERE ID=#{id}
+   	</select>
+   	
+   	<select id="getAllPagesAllStatus" resultType="int">
+   	SELECT count(*) FROM TR_ERS_INCIDENTDETAIL
+   	</select>	
+   	
+   	<select id="findEmergencyIncidentByAllStatus" resultType="EmergencyIncident">
+  	 select id,emergencyIncidentID,incidentSource,incidentType,incidentType_sub,
+	describe,incidentRemark,X,Y,roadName,adminName,streetName,incidentCreateTime,incidentStopTime,
+	incidentGrade,createPerson,STATUS from
+   	(select t.*,rownum row_num from TR_ERS_INCIDENTDETAIL t) b
+	where b.row_num between (#{0}-1)*#{1}+1 and #{0}*#{1}
+   	</select>
+   	<select id="slectMaxId" resultType="int">
+   		SELECT id FROM TR_ERS_INCIDENTDETAIL WHERE id=(SELECT max(id) FROM TR_ERS_INCIDENTDETAIL)
+   	</select>		
+</mapper>
+
+	
+
+
+
+
+
+
+

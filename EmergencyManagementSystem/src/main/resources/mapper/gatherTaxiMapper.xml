@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ste.emer.dao.GatherTaxiMapper">
+
+    <insert id="insertGatherTaxi" parameterType="GatherTaxi">
+        <selectKey keyProperty="gtaxiId" resultType="String" order="BEFORE">
+            select sys_guid() as gtaxiId from dual
+        </selectKey>
+        INSERT INTO TR_ERS_GATHERTAXI(GTAXIID,TAXIX,TAXIY)
+        VALUES(#{gtaxiId,jdbcType=VARCHAR},#{taxiX,jdbcType=VARCHAR},#{taxiY,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="getGatherTaxi" resultType="GatherTaxi">
+        SELECT * FROM TR_ERS_GATHERTAXI
+    </select>
+
+    <delete id="deleteGatherTaxi">
+        DELETE FROM TR_ERS_GATHERTAXI
+    </delete>
+
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.EmeraccidentgradeMapper">
+
+    <select id="findEmeraccidentgradeById" parameterType="String" resultType="Emeraccidentgrade">
+        SELECT DAG_ID AS dagID,DAG_VALUE AS dagValue FROM EMER_ACCIDENT_GRADE WHERE DAG_ID=#{dagID}
+    </select>
+
+    <insert id="addEmeraccidentgrade" parameterType="Emeraccidentgrade">
+        <selectKey keyProperty="dagID" resultType="String" order="BEFORE">
+            <!--select sys_guid() as dagID from dual-->
+            <!--   sys_guid()对应的是oracle,uuid()对应的是mysql  -->
+            select uuid() as dagID from dual
+        </selectKey>
+        INSERT INTO EMER_ACCIDENT_GRADE(DAG_ID,DAG_VALUE)
+        VALUES(#{dagID,jdbcType=VARCHAR},#{dagValue ,jdbcType=VARCHAR})
+    </insert>
+   <!--
+    <select id="getEmeraccidentgrade" resultType="Emeraccidentgrade">
+        SELECT * FROM EMER_ACCIDENT_GRADE
+    </select>
+
+    <delete id="deleteEmeraccidentgrade" parameterType="String">
+        DELETE FROM EMER_ACCIDENT_GRADE WHERE DAG_ID=#{dagID}
+    </delete>-->
+
+    <update id="updateEmeraccidentgrade" parameterType="Emeraccidentgrade">
+        update EMER_ACCIDENT_GRADE SET DAG_VALUE=#{dagValue} WHERE DAG_ID=#{dagID}
+    </update>
+
+
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.YjxtReportMapper">
+    <select id="getViewReport" resultType="ViewReport">
+        SELECT * FROM YJXT_VIEWREPORT
+    </select>
+
+    <select id="getReport" resultType="Report">
+        SELECT * FROM TR_ERS_REPORT
+    </select>
+
+    <delete id="deleteReportByPlanID" parameterType="String">
+        DELETE  FROM TR_ERS_REPORT WHERE PLANID=#{planId,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteReportByIncidentID" parameterType="String">
+        DELETE  FROM TR_ERS_REPORT WHERE INCIDENTID=#{incidentId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insertReport" parameterType="Report">
+        <selectKey keyProperty="reportId" resultType="String" order="BEFORE">
+            select sys_guid() as reportId from dual
+        </selectKey>
+        INSERT INTO TR_ERS_REPORT(REPORTID,REPORTNAME,INCIDENTID,PLANID,REPORTCREATEDATE)
+        VALUES(#{reportId,jdbcType=VARCHAR},#{reportName,jdbcType=VARCHAR},
+        #{incidentId,jdbcType=VARCHAR},#{planId,jdbcType=VARCHAR},#{reportCreateDate,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>

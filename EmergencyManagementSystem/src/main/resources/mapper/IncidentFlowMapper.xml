@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.YjxtIncidentFlowMapper">
+
+
+    <select id="getIncidentFlow" resultType="IncidentFlow">
+        SELECT * FROM TR_ERS_INCIDENTFLOW
+    </select>
+
+
+    <insert id="insertIncidentFlow" parameterType="IncidentFlow">
+        <selectKey keyProperty="incidentFlowID" resultType="String" order="BEFORE">
+            select sys_guid() as incidentFlowID from dual
+        </selectKey>
+
+        INSERT INTO TR_ERS_INCIDENTFLOW(IncidentFlowID,IncidentID,PlanID,IncidentName,IncidentType,
+        IncidentState,CreateDate,IncidentOrigin,StartTime,EndTime,IncidentLevel,
+        IncidentAddress,IncidentDescription,PlaceType,IncidentOther,IncidentX,
+        IncidentY,IsWatchCCTV,OrganID,IsEnd,IsGive,IncidentSubType)
+        VALUES(#{incidentFlowID,jdbcType=VARCHAR},
+        #{incidentID,jdbcType=VARCHAR},#{planID,jdbcType=VARCHAR},#{incidentName,jdbcType=VARCHAR},
+        #{incidentType,jdbcType=VARCHAR},#{incidentState,jdbcType=VARCHAR},#{createDate,jdbcType=VARCHAR},
+        #{incidentOrigin,jdbcType=VARCHAR},#{startTime,jdbcType=VARCHAR},
+        #{endTime,jdbcType=VARCHAR},#{incidentLevel,jdbcType=VARCHAR},#{incidentAddress,jdbcType=VARCHAR},
+        #{incidentDescription,jdbcType=VARCHAR},
+        #{placeType,jdbcType=VARCHAR},#{incidentOther,jdbcType=VARCHAR},#{incidentX,jdbcType=VARCHAR},
+        #{incidentY,jdbcType=VARCHAR},#{isWatchCCTV,jdbcType=VARCHAR},
+        #{organID,jdbcType=VARCHAR},#{isEnd,jdbcType=VARCHAR},#{isGive,jdbcType=VARCHAR},
+        #{incidentSubType,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateIncidentFlow" parameterType="IncidentFlow">
+        UPDATE TR_ERS_INCIDENTFLOW SET IncidentID=#{incidentID},PlanID#{planID},
+        IncidentName=#{incidentName},IncidentType={incidentType},IncidentState={incidentState},CreateDate=#{createDate},
+        StartTime=#{startTime},EndTime=#{endTime},IncidentLevel=#{incidentLevel},IncidentAddress=#{incidentAddress},
+        IncidentDescription=#{incidentDescription},PlaceType=#{placeType},IncidentOther=#{incidentOther},\
+        IncidentX=#{incidentX},IncidentY=#{incidentY},IsWatchCCTV=#{isWatchCCTV},OrganID=#{organID},
+        IsEnd=#{isEnd},IsGive={isGive}
+        WHERE IncidentFlowID=#{incidentFlowID}
+    </update>
+
+    <delete id="deleteIncidentByName" parameterType="IncidentFlow">
+        DELETE FROM TR_ERS_INCIDENTFLOW WHERE IncidentName=#{incidentName,jdbcType=VARCHAR}
+    </delete>
+</mapper>

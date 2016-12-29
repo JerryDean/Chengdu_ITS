@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.EmergencyIncidentLogMapper">
+    <insert id="addEmergencyIncidentLog" parameterType="EmergencyIncidentLog">
+	INSERT INTO  TR_ERS_EXEUTIVELOG(
+			id,
+			emergencyIncidentID,taskName,
+			describe,dateTime
+			)VALUES(
+			SEQ_ER_EMER_EILog_ID.nextVal,
+			#{emergencyIncidentId,jdbcType=INTEGER},#{taskName,jdbcType=VARCHAR},
+			#{describe,jdbcType=VARCHAR},#{dateTime,jdbcType=DATE}
+			)
+    </insert>
+    <select id="findLogByEmergencyIncidentId" resultType="EmergencyIncidentLog">
+    	SELECT *FROM TR_ERS_EXEUTIVELOG WHERE emergencyIncidentId=#{0} ORDER BY TO_NUMBER(TASKNAME)
+    </select>
+    <select id="slectMaxId" resultType="int">
+   		SELECT id FROM TR_ERS_EXEUTIVELOG WHERE id=(SELECT max(id) FROM TR_ERS_EXEUTIVELOG)
+   	</select>
+
+    <!-- 查询相同emergencyIncidentId 条数 -->
+    <select id="findEIIdCount" resultType="int">
+   		SELECT COUNT(1) from TR_ERS_EXEUTIVELOG WHERE EMERGENCYINCIDENTID = #{0}
+   	</select>
+
+    <update id="updateEmergencyIncidentLog" parameterType="EmergencyIncidentLog">
+        update TR_ERS_EXEUTIVELOG t
+        <set>
+            <if test="emergencyIncidentId != null">
+                t.EMERGENCYINCIDENTID = #{emergencyIncidentId,jdbcType=INTEGER},
+            </if>
+            <if test="taskName != null">
+                t.TASKNAME = #{taskName,jdbcType=VARCHAR},
+            </if>
+            <if test="describe != null">
+                t.DESCRIBE = #{describe,jdbcType=VARCHAR},
+            </if>
+            <if test="dateTime != null">
+                t.DATETIME = #{dateTime,jdbcType=TIMESTAMP}
+            </if>
+        </set>
+        where t.id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteEmergencyIncidentLog" parameterType="String">
+        DELETE tr_ers_exeutivelog t WHERE t.id = #{id,jdbcType=INTEGER}
+    </delete>
+</mapper>

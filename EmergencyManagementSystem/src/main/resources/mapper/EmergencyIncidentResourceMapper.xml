@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.EmergencyIncidentResourceMapper">
+	<insert id="addEmergencyIncidentResource" parameterType="EmergencyIncidentResource">
+		INSERT INTO TR_ERS_RESOURCE(
+				ID, 
+				RESOURCETYPE, 
+				ORGANIZATIONUNIT, 
+				SUBTYPE, 
+				LOCATION, 
+				COUNT, 
+				CONTACTPERSON, 
+				PHONENUMBER, 
+				REMARK,
+				businessscope
+		)VALUES(
+				SEQ_ER_EMER_Resource_ID.NEXTVAL,
+				#{resourceType,jdbcType=INTEGER},
+				#{orgnizationUnit,jdbcType=VARCHAR},
+				#{subType,jdbcType=INTEGER},
+				#{location,jdbcType=VARCHAR},
+				#{count,jdbcType=INTEGER},
+				#{contactPerson,jdbcType=VARCHAR},
+				#{phoneNumber,jdbcType=VARCHAR},
+				#{remark,jdbcType=VARCHAR},
+				#{businessScope,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<delete id="deleteEmergencyIncidentResource" parameterType="String">
+		DELETE FROM TR_ERS_RESOURCE WHERE ID = #{id}
+	</delete>
+	
+	<update id="updateEmergencyIncidentResource" parameterType="EmergencyIncidentResource">
+		UPDATE TR_ERS_RESOURCE 
+				SET 
+				RESOURCETYPE = #{resourceType,jdbcType=INTEGER},
+				ORGANIZATIONUNIT = #{orgnizationUnit,jdbcType=VARCHAR}, 
+				SUBTYPE = #{subType,jdbcType=INTEGER}, 
+				LOCATION = #{location,jdbcType=VARCHAR}, 
+				COUNT = #{count,jdbcType=INTEGER}, 
+				CONTACTPERSON = #{contactPerson,jdbcType=VARCHAR}, 
+				PHONENUMBER = #{phoneNumber,jdbcType=VARCHAR}, 
+				REMARK = #{remark,jdbcType=VARCHAR},
+				 businessscope = #{businessScope,jdbcType=VARCHAR}
+				WHERE 
+				ID = TO_NUMBER(#{id,jdbcType=VARCHAR})
+	</update>
+	           
+	<select id="getEmergencyIncidentResource" resultType="EmergencyIncidentResource">
+		SELECT * FROM TR_ERS_RESOURCE 
+			 <if test="resourceType != 0 ">   
+			 	WHERE      
+				RESOURCETYPE = #{resourceType}
+				<if test="location != null and location != '' ">  
+	        		AND LOCATION LIKE '%'||#{location}||'%' 
+	    	    </if> 
+			 </if>      
+			<if test="resourceType == 0 and location != null and location != '' ">  
+	       		WHERE LOCATION LIKE '%'||#{location}||'%'
+	        </if> 
+	        ORDER BY ID
+			  
+	</select>
+	<select id="findEmergencyIncidentResource" resultType="EmergencyIncidentResource">
+		SELECT 
+			b.id, 
+			b.RESOURCETYPE ORGANIZATIONUNIT,
+			b.SUBTYPE,
+			b.LOCATION,
+			b.COUNT,
+			b.CONTACTPERSON,
+			b.PHONENUMBER,
+			b.REMARK ,
+			b.businessscope
+			FROM(
+				SELECT t.*, ROWNUM RN FROM TR_ERS_RESOURCE t ORDER BY ID DESC) b WHERE RN = 1
+	</select>
+</mapper>

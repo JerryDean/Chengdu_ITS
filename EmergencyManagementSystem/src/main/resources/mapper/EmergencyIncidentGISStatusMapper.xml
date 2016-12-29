@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ste.emer.dao.EmergencyIncidentGISStatusMapper">
+	<insert id="addEmergencyIncidentGISStatus" parameterType="EmergencyIncidentGISStatus">
+		INSERT INTO TR_ERS_GISSTATUS(
+				ID,
+				EMERGENCYINCIDENTID,
+				STATUSTYPE,
+				VALUE
+		)VALUES(
+				SEQ_ER_EMER_GISStatus_ID.NEXTVAL,
+				TO_NUMBER(#{emergencyIncidentId,jdbcType=VARCHAR}),
+				#{statusType,jdbcType=INTEGER},
+				#{value,jdbcType=VARCHAR}
+		)
+	</insert>
+	<select id="getEmergencyIncidentGISStatus" parameterType="String" resultType="EmergencyIncidentGISStatus">
+		SELECT * FROM TR_ERS_GISSTATUS WHERE TO_CHAR(EMERGENCYINCIDENTID) = #{emergencyIncidentId}
+	</select>
+	<select id="findGISStatus" resultType="EmergencyIncidentGISStatus">
+		SELECT 
+			b.ID,
+			b.EMERGENCYINCIDENTID,
+			b.STATUSTYPE,
+			b.VALUE
+		FROM (
+			SELECT t.*, ROWNUM RN FROM TR_ERS_GISSTATUS t ORDER BY ID DESC
+			) b WHERE RN = 1
+	</select>
+	<delete id="deleteEmergencyIncidentGISStatus" parameterType="String">
+		DELETE FROM TR_ERS_GISSTATUS WHERE TO_CHAR(EMERGENCYINCIDENTID) = #{0}
+	</delete>
+</mapper>
