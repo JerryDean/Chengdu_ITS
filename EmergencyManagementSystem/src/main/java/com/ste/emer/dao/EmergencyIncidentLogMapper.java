@@ -59,4 +59,6 @@ public interface EmergencyIncidentLogMapper {
 	public int findEIIdCount(String emergencyIncidentId);
 
     int deleteEmergencyIncidentLog(@Param("id") String id);
+
+    EmergencyIncidentLog findById(@Param("id") String id);
 }

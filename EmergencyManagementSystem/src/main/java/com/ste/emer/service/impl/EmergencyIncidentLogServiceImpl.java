@@ -144,7 +144,26 @@ public class EmergencyIncidentLogServiceImpl implements
         result.setId(id);
         int num = 0;
         if (null != id && !id.equals("")) {
-            num = emergencyIncidentLogMapper.deleteEmergencyIncidentLog(id);
+            EmergencyIncidentLog byId = emergencyIncidentLogMapper.findById(id);
+            if (null != byId) {
+                String taskName = byId.getTaskName();
+                String emergencyIncidentId = byId.getEmergencyIncidentId();
+                num = emergencyIncidentLogMapper.deleteEmergencyIncidentLog(id);
+                if (null != emergencyIncidentId && !emergencyIncidentId.equals("")) {
+                    List<EmergencyIncidentLog> logByEmergencyIncidentId = emergencyIncidentLogMapper.findLogByEmergencyIncidentId(emergencyIncidentId);
+                    if (null != logByEmergencyIncidentId && !logByEmergencyIncidentId.isEmpty()) {
+                        for (EmergencyIncidentLog emergencyIncidentLog : logByEmergencyIncidentId) {
+                            Integer taskName1 = Integer.valueOf(emergencyIncidentLog.getTaskName());
+                            if (taskName1 > Integer.valueOf(taskName)) {
+                                emergencyIncidentLog.setTaskName(String.valueOf(taskName1 - 1));
+                            }
+                            emergencyIncidentLogMapper.updateEmergencyIncidentLog(emergencyIncidentLog);
+                        }
+                    }
+                }
+            } else {
+                result.setStatusCode(FAILED);
+            }
         }
         if (num == 1) {
             result.setStatusCode(SUCCESS);

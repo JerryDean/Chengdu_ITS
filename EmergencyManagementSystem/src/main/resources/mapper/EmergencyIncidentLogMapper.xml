@@ -47,4 +47,8 @@
     <delete id="deleteEmergencyIncidentLog" parameterType="String">
         DELETE tr_ers_exeutivelog t WHERE t.id = #{id,jdbcType=INTEGER}
     </delete>
+
+    <select id="findById" parameterType="String" resultType="EmergencyIncidentLog">
+        SELECT * FROM TR_ERS_EXEUTIVELOG t WHERE t.ID = #{id,jdbcType=INTEGER}
+    </select>
 </mapper>
