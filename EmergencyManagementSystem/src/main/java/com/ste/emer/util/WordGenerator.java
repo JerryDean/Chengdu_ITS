@@ -38,6 +38,7 @@ public class WordGenerator {
 			// 这个地方不能使用FileWriter因为需要指定编码类型否则生成的Word文档会因为有无法识别的编码而无法打开
 			Writer w = new OutputStreamWriter(new FileOutputStream(f), "utf-8");
 			t.process(dataMap, w);
+			w.flush();
 			w.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -106,25 +107,6 @@ public class WordGenerator {
 				}
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("name", "123456");
-		map.put("type", "123456");
-		map.put("subtype", "123456");
-		map.put("level", "123456");
-		map.put("location", "123456");
-		map.put("longitude", "123456");
-		map.put("latitude", "123456");
-		map.put("status", "123456");
-		map.put("description", "123456");
-		map.put("remark", "123456");
-		map.put("start", "123456");
-		map.put("end", "123456");
-		map.put("approach", "123456");
-		map.put("resource", "123456");
-		WordGenerator.createDoc(map, "model");
 	}
 
 }

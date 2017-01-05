@@ -170,6 +170,7 @@ public class EmergencyIncidentLogServiceImpl implements
         } else {
             result.setStatusCode(FAILED);
         }
+        System.out.println(result);
         return result;
     }
 

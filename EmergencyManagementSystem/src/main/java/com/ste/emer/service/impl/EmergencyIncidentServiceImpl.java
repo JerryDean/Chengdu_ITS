@@ -277,6 +277,8 @@ public class EmergencyIncidentServiceImpl implements EmergencyIncidentService {
                         break;
                 }
                 map.put("type", type);
+            } else {
+                map.put("type", "");
             }
             Integer incidentType_sub = incident.getIncidentType_sub();
             if (null != incidentType_sub) {
@@ -288,6 +290,8 @@ public class EmergencyIncidentServiceImpl implements EmergencyIncidentService {
                     }
                 }
                 map.put("subtype", subType);
+            } else {
+                map.put("subtype", "");
             }
             Integer incidentGrade = incident.getIncidentGrade();
             if (null != incidentGrade) {
@@ -328,6 +332,8 @@ public class EmergencyIncidentServiceImpl implements EmergencyIncidentService {
                         break;
                 }
                 map.put("status", state);
+            } else {
+                map.put("status", "");
             }
             String describe = incident.getDescribe();
             if (null != describe && !describe.equals("")) {
@@ -359,9 +365,9 @@ public class EmergencyIncidentServiceImpl implements EmergencyIncidentService {
             if (null != taskForEmergencyIncidents && !taskForEmergencyIncidents.isEmpty()) {
                 for (int i = 0; i < taskForEmergencyIncidents.size(); i++) {
                     stringBuilder.append((i+1) + taskForEmergencyIncidents.get(i).getDescribe());
-                    stringBuilder.append(" </w:t></w:r></w:p><w:p><w:pPr></w:pPr>");
+                    stringBuilder.append("</w:t></w:r></w:p><w:p><w:pPr></w:pPr>");
                     stringBuilder.append("<w:r><w:rPr>");
-                    stringBuilder.append(" </w:rPr><w:t>  ");
+                    stringBuilder.append("</w:rPr><w:t>");
                 }
                 if (stringBuilder.length() != 0) {
                     map.put("approach", stringBuilder.toString());
@@ -376,9 +382,9 @@ public class EmergencyIncidentServiceImpl implements EmergencyIncidentService {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < resourceDetails.size(); i++) {
                     sb.append((i + 1) + resourceDetails.get(i).getName());
-                    sb.append(" </w:t></w:r></w:p><w:p><w:pPr></w:pPr>");
+                    sb.append("</w:t></w:r></w:p><w:p><w:pPr></w:pPr>");
                     sb.append("<w:r><w:rPr>");
-                    sb.append(" </w:rPr><w:t>  ");
+                    sb.append("</w:rPr><w:t>");
                 }
                 if (sb.length() != 0) {
                     map.put("resource", sb.toString());
@@ -391,6 +397,7 @@ public class EmergencyIncidentServiceImpl implements EmergencyIncidentService {
             File file = WordGenerator.createDoc(map, "model");
             byte[] bytes = WordGenerator.getBytes(file);
             result = WordGenerator.encode(bytes);
+//            file.delete();
         }
         return result;
 	}
